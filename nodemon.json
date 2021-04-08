@@ -1,0 +1,10 @@
+{
+    "env": {
+        "PORT": 9090,
+        "DB_HOST": "database",
+        "DB_PASSWORD": "Anything5000",
+        "DB_USER": "ashipa_dev",
+        "DB_NAME": "ashipa_mms_v2",
+        "DB_PORT": 5432
+    }
+}

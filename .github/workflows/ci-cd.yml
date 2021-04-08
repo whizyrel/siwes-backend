@@ -1,0 +1,34 @@
+name: MMS-2.0.0 Backend CI && CD
+
+on:
+  push:
+    branches: [ staging ]
+  pull_request:
+    branches: [ staging ]
+
+defaults:
+  run:
+    shell: bash
+
+env:
+
+jobs:
+  ci:
+    runs-on: [ubuntu-ae-project-pdapp, self-hosted, linux, x64]
+
+    strategy:
+      max-parallel: 1
+      matrix:
+        node-version: [14.x]
+
+    steps:
+
+  cd:
+    runs-on: [ubuntu-ae-project-pdapp, self-hosted, linux, x64]
+
+    strategy:
+      max-parallel: 1
+      matrix:
+        node-version: [14.x]
+
+    steps:

@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "outDir": "dist",
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "noImplicitAny": true,
+        "allowSyntheticDefaultImports": true,
+        "target": "es5",
+        "allowJs": true,
+        "resolveJsonModule": true,
+        "sourceMap": true,
+        "lib": ["es2015"],
+        "removeComments": true,
+        "pretty": true
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": ["tests/**/*", "webpack.config.js"]
+}
