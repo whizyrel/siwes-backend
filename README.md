@@ -1,9 +1,8 @@
 # MMS Backend v2.0.0
 
-[![build status](https://github.com/Ashipa-Electric/ashipa-mms-backend/actions/workflows/cd.yml/badge.svg)](https://github.com/Ashipa-Electric/ashipa-mms-backend/actions/workflows/cd.yml)
+[![build status](https://github.com/Ashipa-Electric/node-ts-boilerplate/actions/workflows/cd.yml/badge.svg)](https://github.com/Ashipa-Electric/node-ts-boilerplate/actions/workflows/cd.yml)
 
-This is the official RESTful Service for the MMS v2.0.0. Purpose of this RESTful Service is described below.
-Visit link here [RESTful service](https://mms-staging.ashipaelectric.com:9090). This project is bundles using webpack into a single file dependencies inclusive.
+This is only a boilerplate for Nodejs Typescript. This project is bundled using webpack into a single file with dependencies inclusive.
 
 ## Linting
 
