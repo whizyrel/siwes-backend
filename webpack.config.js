@@ -9,11 +9,12 @@ Object.keys(json.env)
     envVars[key] = JSON.stringify(json.env[key]);
   });
 
+// TODO create repository and add to package.json
 const defaultConfig = {
   target: 'node',
-  entry: './src/cluster.ts',
+  entry: './src/server.ts',
   plugins: [
-    new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
+    new webpack.EnvironmentPlugin([...Object.keys(process.env)]),
     new webpack.DefinePlugin({
       'process.env': envVars,
     }),
@@ -24,10 +25,6 @@ const defaultConfig = {
         test: /\.ts?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      },
-      {
-        test: /\.html$/i,
-        loader: 'html-loader',
       }
     ],
   },

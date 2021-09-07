@@ -8,7 +8,7 @@ const { PORT } = process.env;
 const _app = express();
 _app.use(app);
 http.createServer(app).listen(PORT || 6622, () => {
-  console.log(chalk.yellow(`[Server] {http} started on PORT ${PORT || 6622}`));
+  console.log(chalk.red(`[Server] {http} started on PORT ${PORT || 6622}`));
 });
 
 process.on('uncaughtException', (error) => {

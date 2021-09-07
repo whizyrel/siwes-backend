@@ -1,48 +1,45 @@
+# TODO add frontend
 version: "3"
 services:
   db:
-    # container_name is ignored in swarm and result in a clash when replicating service
-    container_name: ashipa-mms-2.0.0-postgres-devel
+    container_name: siwes-db
     labels:
-      ashipa-mms-2.0.0-psql-db-devel: "This the postgresql database"
+      siwes-db: "This the MongoDB Database"
     build:
       context: .
-      dockerfile: psql/Dockerfile
-    image: ashipa-mms-2.0.0-postgres-devel:1.0.0
-    # deploy:
-      # when considering 1+ replicas -> mount common data directory for all replicas and nginx for tcp & udp load balancing
-      # mode: "replicated"
-      # replicas: 1
-      # resources:
-      #   limits:
-      #     cpus: "0.1"
-      #     memory: 50M
+      dockerfile: mongodb/Dockerfile
+    image: siwes-db:1.0.0
     restart: unless-stopped
-    network_mode: "bridge"
+    networks:
+      - siwes-common-network
     ports:
-      - "5552:5432"
+      - "27100:27017"
     volumes:
-      - /var/lib/postgresql/ashipa-mms-v2/:/var/lib/postgresql/data
+      - ./mongodb:/home/mongodb
+      - ./mongodb:/docker-entrypoint-initdb.d
+      - ./mongodb/mongod.conf:/etc/mongod.conf:rw
+      - $HOME/siwes-db:/data/db:rw
+      # - /var/log/mongodb/mongod.log:/var/log/mongodb/mongod.log:rw
+    command: ['--config', '/etc/mongod.conf']
 
   backend:
-  # can replicate backend and setup proxy to upstreams via nginx
-    container_name: ashipa-mms-2.0.0-backend-devel
+    container_name: siwes-backend
     labels:
-      ashipa-mms-2.0.0-nodejs-backend-devel: "This the MMS backend"
+      siwes-backend: "This the Backend"
     build:
       context: ./
       dockerfile: Dockerfile
-    image: ashipa-mms-2.0.0-backend-devel:1.0.0
+    image: siwes-backend:1.0.0
     restart: unless-stopped
     depends_on:
       - db
-    network_mode: "bridge"
-    links:
-      - "db:database"
+    networks:
+      - siwes-common-network
     ports:
-      - "9090:9090"
+      - "9100:9100"
     volumes:
       - ./dist:/usr/app
 
-# volumes:
-#   ashipa-mms-2.0.0-psql-devel-volume:
+networks:
+  siwes-common-network:
+    driver: bridge

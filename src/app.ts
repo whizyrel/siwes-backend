@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import express = require('express');
 import cors = require('cors');
 import morgan = require('morgan');
-import landingTemplate from './utils/landing.util';
 
 const app = express();
 
@@ -13,9 +12,7 @@ app.use(express.static('static', {extensions: ['html']}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-// [middleware] address cors related issues
 app.use((req: Request, res: Response, next: NextFunction) => {
-    // TODO restrict origins to mms frontend DNS
     res.header('Access-Control-Allow-Origin', '*');
     res.header(
         'Access-Control-Allow-Methods',
@@ -26,7 +23,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
         'Origin, X-Custom-Header, ' + 'Accept, Authorization, Content-Type'
     );
 
-    //  application/x-www-form-urlencoded,
     if (req.method === 'OPTIONS') {
         return res.status(200).json({});
     }
@@ -35,13 +31,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // TODO import routes here
+import dataHandlerRoute from './routes/data.route';
 
-import { query } from './helpers/pg.helper';
-
-query(`SELECT NOW()`, (err: any, results: any) => console.log(`[Qeury]`, {err, results}));
+app.use('/d', dataHandlerRoute);
 
 app.get('/', (_: Request, res: Response) => {
-    return res.status(200).send(landingTemplate);
+    return res.status(200).json('Hello there, you are warmly welcomed!');
 });
 
 app.use((_: Request, __: Response, next: NextFunction) => {

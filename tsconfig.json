@@ -15,7 +15,8 @@
         "pretty": true
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "index.d.ts"
     ],
     "exclude": ["tests/**/*", "webpack.config.js"]
 }
