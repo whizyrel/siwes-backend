@@ -2,9 +2,11 @@
     "env": {
         "PORT": 9100,
         "DB_HOST": "siwes-db",
-        "DB_PASSWORD": "siwes-user",
-        "DB_USER": "siwes-user",
-        "DB_NAME": "siwes-db",
-        "DB_PORT": 27100
+        "DB_PASSWORD": "siwes_user",
+        "DB_USER": "siwes_user",
+        "DB_NAME": "siwes_db",
+        "DB_PORT": 27017,
+        "MQTT_HOST": "mqtt://evryword.com.ng/mqtt",
+        "MQTT_PORT": 1884
     }
 }

@@ -32,6 +32,10 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // TODO import routes here
 import dataHandlerRoute from './routes/data.route';
+import { connectToBroker } from './helpers/mqtt.helper';
+
+// INFO start mqtt listener
+connectToBroker();
 
 app.use('/d', dataHandlerRoute);
 
