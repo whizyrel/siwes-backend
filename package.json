@@ -8,7 +8,7 @@
     "dev": "webpack --config-name development",
     "build": "rimraf dist/api* && webpack --config-name production",
     "prod": "node dist/api.bundle.js",
-    "app:start": "npm run build && docker-compose up -d",
+    "app:start": "docker-compose up -d",
     "app:stop": "docker-compose down",
     "app:restart": "docker-compose restart",
     "logs": "docker-compose logs -f --tail=1000",
