@@ -234,7 +234,7 @@ export class DataHandler {
         ]
         const data = await WeatherData.aggregate(pipeline);
 
-        return res.status(200).json({data, id: req.query.id});
+        return res.status(200).json({data});
     }
 }
 
