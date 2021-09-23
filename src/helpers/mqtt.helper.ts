@@ -19,6 +19,10 @@ export const connectToBroker = () => {
     return client;
 }
 
+const publishData = (c: MqttClient, data: any, topic: string): void =>  {
+    c.publish(topic, typeof(data) === 'string' ? data : JSON.stringify(data));
+};
+
 const setupListeners = (c: MqttClient) => {
     c?.on('connect', (_: any) => {
         console.info(`[MQTT] connected`, _);
@@ -37,9 +41,13 @@ const setupListeners = (c: MqttClient) => {
 
         console.log(`[MQTT] message`, {topic, payload});
         weatherDataSubject.next(payload);
+
+        if (payload) {
+            publishData(c, payload, `/rt/weather-data/${payload.id}`);
+        }
     });
 
     c?.on('error', (event: any) => {
         console.error(`[MQTT] connection error`, event);
     });
-}
+};
