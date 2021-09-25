@@ -1,0 +1,49 @@
+name: Weather CI && CD
+
+on:
+  push:
+    branches: [ staging ]
+  pull_request:
+    branches: [ staging ]
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  SSH_PASSWORD: ${{secrets.SSH_PASSWORD}}
+
+jobs:
+  cd:
+    runs-on: [ubuntu-ae-project-pdapp, self-hosted, linux, x64]
+
+    strategy:
+      max-parallel: 1
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Checks Out to Repo 
+        uses: actions/checkout@v2
+
+      - name: Create staging directory
+        if: ${{ cancelled() == false && failure() == false }}
+        run: |
+          mkdir -p /home/${{secrets.USER}}/${{secrets.STAGING_PATH}}
+      - name: Build Artifacts
+        if: ${{ cancelled() == false && failure() == false }}
+        run: |
+          npm i
+          npm run build
+      - name: Copy Source & Clean
+        if: ${{ cancelled() == false && failure() == false }}
+        run: |
+          cp -r docker-compose.yml Dockerfile mongodb dist nginx-conf-gen.sh -t /home/${{secrets.USER}}/${{secrets.STAGING_PATH}}
+          rm -rf node_modules
+      - name: Start Application
+        if: ${{ failure() == false || cancelled() == false }}
+        run: |
+          cd /home/${{secrets.USER}}/${{secrets.STAGING_PATH}}
+          docker-compose up -d --build
+          chmod +x nginx-conf-gen.sh
+          echo $SSH_PASSWORD | sudo -S ./nginx-conf-gen.sh [DOMAIN-HERE] --purpose=frontend $(docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{(index $conf 0).HostPort}} {{end}}' siwes-backend) siwes-backend-staging.conf
