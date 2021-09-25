@@ -1,6 +1,7 @@
 # folders
 node_modules
 dist
+!frontend/dist
 
 # files
 package-lock.json

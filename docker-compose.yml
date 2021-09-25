@@ -19,7 +19,6 @@ services:
       - ./mongodb:/docker-entrypoint-initdb.d
       - ./mongodb/mongod.conf:/etc/mongod.conf:rw
       - $HOME/siwes-db:/data/db:rw
-      # - /var/log/mongodb/mongod.log:/var/log/mongodb/mongod.log:rw
     command: ['--config', '/etc/mongod.conf']
 
   backend:
@@ -39,6 +38,25 @@ services:
       - "9100:9100"
     volumes:
       - ./dist:/usr/app
+
+  frontend:
+    container_name: siwes-frontend
+    labels:
+      siwes-frontend: "This the Frontend"
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    image: siwes-frontend:1.0.0
+    restart: unless-stopped
+    depends_on:
+      - db
+      - backend
+    networks:
+      - siwes-common-network
+    ports:
+      - "9101:80"
+    volumes:
+      - ./frontend/dist/siwes:/usr/share/nginx/html/
 
 networks:
   siwes-common-network:
