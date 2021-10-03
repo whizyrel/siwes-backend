@@ -45,10 +45,12 @@ export class DataHandler {
         const target: string = req.query.target as string;
         const today = new Date();
         const dw = today.getDay();
-        const sd = today.getDate() - (dw - 1);
-        const ed = today.getDate() + (7 - dw);
+        const sd = today.getDate() - ((dw + 1) - 1);
+        const ed = today.getDate() + (7 - (dw + 1));
         const start = new Date(today.getFullYear(), today.getMonth(), sd, 0, 0, 0);
         const end = new Date(today.getFullYear(), today.getMonth(), ed, 23, 59, 0);
+        console.log(`[weekly]`, (dw + 1), sd, ed, start, end);
+
         const pipeline = [
             {
                 $set: {
